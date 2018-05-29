@@ -1,0 +1,19 @@
+stages:
+  - clean
+  - build
+  - test
+
+clean:
+  stage: clean
+  script:
+    - ./gradlew clean
+
+build:
+  stage: build
+  script:
+    - ./gradlew build
+
+test:
+  stage: test
+  script:
+    - ./gradlew test
