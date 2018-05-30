@@ -26,6 +26,6 @@ deploy:
     - pwd
     - scp -o StrictHostKeyChecking=no \  
     ~/builds/452e3e31/0/g1727129/small-steps-backend/build/libs/small-steps-1.0-SNAPSHOT.war \
-    kcm116@cloud-vm-45-120.doc.ic.ac.uk:/var/lib/tomcat8/webapps/small-steps-webapp.war
+    kcm116@cloud-vm-45-120.doc.ic.ac.uk: /var/lib/tomcat8/webapps/small-steps-webapp.war
   only:
     - master
