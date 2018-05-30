@@ -1,13 +1,6 @@
 stages:
-  - clean
   - build
   - test
-  - deploy_staging_server
-
-clean:
-  stage: clean
-  script:
-    - ./gradlew clean
     
 before_script:
   - eval $(ssh-agent -s)
@@ -22,13 +15,3 @@ test:
   stage: test
   script:
     - ./gradlew test
-    
-deploy:
-  stage: deploy_staging_server
-  script:
-    - pwd
-    - scp - o StrictHostKeyChecking=no \
-    /home/gitlab-runner/builds/452e3e31/0/g1727129/small-steps-backend/build/libs/small-steps-1.0-SNAPSHOT.war \
-    kcm116@146.169.45.117:/var/lib/tomcat8/webapps/small-steps-webapp.war
-  only:
-    - master
