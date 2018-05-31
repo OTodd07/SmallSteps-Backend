@@ -11,4 +11,5 @@ public class GreetingControllerTests {
     GreetingController controller = new GreetingController();
     assertTrue(controller.greeting("hello").getContent().equals("Hello, HELLO!"));
   }
+
 }
