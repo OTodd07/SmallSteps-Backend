@@ -25,7 +25,7 @@ deploy:
   script:
     - ./gradlew assemble
     - pwd
-    - scp -o StrictHostKeyChecking=no build/libs/small-steps-1.0-SNAPSHOT.war kcm116@cloud-vm-45-120.doc.ic.ac.uk:/var/lib/tomcat8/webapps/small-steps-webapp.war
+    - scp -o StrictHostKeyChecking=no build/libs/small-steps-1.0-SNAPSHOT.war kcm116@cloud-vm-45-120.doc.ic.ac.uk:/var/lib/tomcat8/webapps/smallsteps.war
     
   only:
     - master
