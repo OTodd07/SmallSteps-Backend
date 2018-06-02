@@ -5,15 +5,35 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+
+import java.util.Properties;
+import java.sql.*;
+
 
 @SpringBootApplication
 public class Application extends SpringBootServletInitializer {
-  private final String url = "jdbc:postgresql://db.doc.ic.ac.uk:5432/g1727129_u";
-  private final String user = "g1727129_u";
-  private final String password = "CgltOdrPo9";
+
+  private static void Connect() {
+    try {
+      Class.forName("org.postgresql.Driver");
+    } catch (ClassNotFoundException e) {
+      System.err.println("Where is your PostgreSQL JDBC Driver? "
+              + "Include in your library path!");
+      e.printStackTrace();
+    }
+    String url = "jdbc:postgresql://db.doc.ic.ac.uk:5432/g1727129_u";
+    Properties props = new Properties();
+    props.setProperty("user", "g1727129_u");
+    props.setProperty("password", "CgltOdrPo9");
+    //props.setProperty("ssl", "true");
+    try {
+      Connection conn = DriverManager.getConnection(url, props);
+
+      // space to add statements
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
 
   @Override
   protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
@@ -22,6 +42,9 @@ public class Application extends SpringBootServletInitializer {
 
   public static void main(String[] args) {
     SpringApplication.run(Application.class, args);
+    Connect();
 
   }
+
+
 }
