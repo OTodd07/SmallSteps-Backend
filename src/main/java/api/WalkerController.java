@@ -40,6 +40,8 @@ public class WalkerController {
       if (!db.openConnection()) return new ResponseEntity<>("Open connection failed", HttpStatus.SERVICE_UNAVAILABLE);
     } catch (SQLException e) {
       return new ResponseEntity<>(e.getMessage(), HttpStatus.SERVICE_UNAVAILABLE);
+    } catch (ClassNotFoundException e) {
+      return new ResponseEntity<>("Class Not Found " + e.getMessage(), HttpStatus.SERVICE_UNAVAILABLE);
     }
     String query = String.format("SELECT * FROM walkers WHERE device_id = '%s'", deviceId);
     List<Walker> walkers = Walker.fromString(db.executeSelectQuery(query));
