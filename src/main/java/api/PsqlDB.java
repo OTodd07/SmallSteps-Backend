@@ -28,7 +28,8 @@ public class PsqlDB implements Database {
   }
 
   @Override
-  public boolean openConnection() throws SQLException {
+  public boolean openConnection() throws SQLException, ClassNotFoundException {
+    Class.forName("org.postgresql.Driver");
     conn = DriverManager.getConnection(URL, properties);
     return true;
   }
