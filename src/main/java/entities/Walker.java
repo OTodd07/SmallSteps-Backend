@@ -38,4 +38,8 @@ public class Walker {
     return results.stream().map(row -> new Walker(row.get(0), row.get(1), row.get(2), row.get(3))).collect(Collectors.toList());
   }
 
+  @Override
+  public String toString() {
+    return this.name;
+  }
 }
