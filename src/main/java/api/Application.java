@@ -9,7 +9,6 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import java.util.Properties;
 import java.sql.*;
 
-
 @SpringBootApplication
 public class Application extends SpringBootServletInitializer {
 
@@ -25,7 +24,6 @@ public class Application extends SpringBootServletInitializer {
     Properties props = new Properties();
     props.setProperty("user", "g1727129_u");
     props.setProperty("password", "CgltOdrPo9");
-    //props.setProperty("ssl", "true");
     try {
       Connection conn = DriverManager.getConnection(url, props);
 
@@ -42,7 +40,7 @@ public class Application extends SpringBootServletInitializer {
 
   public static void main(String[] args) {
     SpringApplication.run(Application.class, args);
-    Connect();
+//    Connect();
 
   }
 
