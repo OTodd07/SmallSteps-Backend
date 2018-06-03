@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +36,11 @@ public class WalkerController {
   public ResponseEntity<String> get(@RequestParam(value="device_id") String deviceId,
                           HttpServletResponse response) {
     PsqlDB db = new PsqlDB(new String[]{"device_id", "name", "picture", "phone_number"});
-    if (!db.openConnection()) return new ResponseEntity<>("Open connection failed", HttpStatus.SERVICE_UNAVAILABLE);
+    try {
+      if (!db.openConnection()) return new ResponseEntity<>("Open connection failed", HttpStatus.SERVICE_UNAVAILABLE);
+    } catch (SQLException e) {
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.SERVICE_UNAVAILABLE);
+    }
     String query = String.format("SELECT * FROM walkers WHERE device_id = '%s'", deviceId);
     List<Walker> walkers = Walker.fromString(db.executeSelectQuery(query));
 

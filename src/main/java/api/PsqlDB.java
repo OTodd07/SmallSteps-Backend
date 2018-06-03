@@ -28,15 +28,8 @@ public class PsqlDB implements Database {
   }
 
   @Override
-  public boolean openConnection() {
-    try {
-      conn = DriverManager.getConnection(URL, properties);
-    } catch (SQLException exception) {
-      // TODO handle exception properly
-      exception.printStackTrace();
-      return false;
-    }
-
+  public boolean openConnection() throws SQLException {
+    conn = DriverManager.getConnection(URL, properties);
     return true;
   }
 
