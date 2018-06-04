@@ -2,6 +2,8 @@ package api;
 
 import entities.Walker;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -30,7 +32,12 @@ public class WalkerController {
     }
 
     return walkers;
+  }
 
+  @PostMapping
+  public ResponseEntity<String> post() {
+    ResponseEntity<String> response = new ResponseEntity<>(HttpStatus.OK);
+    return response;
   }
 
 }
