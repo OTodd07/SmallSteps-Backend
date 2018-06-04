@@ -6,7 +6,9 @@ import java.util.List;
 public interface Database {
 
   boolean openConnection() throws SQLException, ClassNotFoundException;
+
   List<List<String>> executeSelectQuery(String sql);
+
   boolean closeConnection();
 
 }

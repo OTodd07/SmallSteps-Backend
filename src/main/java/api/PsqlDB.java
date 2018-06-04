@@ -1,13 +1,9 @@
 package api;
 
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.stream.IntStream;
 
 public class PsqlDB implements Database {
 
@@ -16,11 +12,9 @@ public class PsqlDB implements Database {
   private static final String URL = "jdbc:postgresql://db.doc.ic.ac.uk:5432/g1727129_u";
 
   private final Properties properties = new Properties();
-  //private final String[] columnHeaders;
   private Connection conn = null;
 
   public PsqlDB() {
-    //this.columnHeaders = columnHeaders;
     properties.setProperty("user", USERNAME);
     properties.setProperty("password", PASSWORD);
   }
