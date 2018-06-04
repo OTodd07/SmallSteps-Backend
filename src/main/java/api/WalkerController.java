@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,8 +36,18 @@ public class WalkerController {
   }
 
   @PostMapping
-  public ResponseEntity<String> post() {
-    ResponseEntity<String> response = new ResponseEntity<>(HttpStatus.OK);
+  public ResponseEntity<String> post(@RequestBody Walker walker) {
+    boolean status = false;
+    ResponseEntity<String> response;
+
+    try {
+      status = walkerService.addNewWalker(walker);
+      response = new ResponseEntity<>(status ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
+    } catch (SQLException exception) {
+      response = new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
+    System.out.println(walker);
     return response;
   }
 
