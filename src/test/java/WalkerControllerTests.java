@@ -19,11 +19,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -54,14 +54,14 @@ public class WalkerControllerTests {
   public void setUp() {
     Mockito.reset(walkerService);
     mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-//    walker = new Walker("id","Walker","walker.jpg","123");
     walker = new Walker("wpefhflaimcbcypsygywqqyutvtxvbhpdnlb",
             "Alice", "alice.jpg", "12345678901");
   }
 
   @Test
   public void findWalkerByIDShouldReturnsWalkerWithThatID() throws Exception {
-    when(walkerService.findWalkerById("wpefhflaimcbcypsygywqqyutvtxvbhpdnlb")).thenReturn(Arrays.asList(walker));
+    when(walkerService.findWalkerById("wpefhflaimcbcypsygywqqyutvtxvbhpdnlb"))
+            .thenReturn(Collections.singletonList(walker));
     mockMvc.perform(get("/walker?device_id=wpefhflaimcbcypsygywqqyutvtxvbhpdnlb"))
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith("application/json"))
@@ -90,6 +90,7 @@ public class WalkerControllerTests {
 
   @Test
   public void returnsSuccessOnValidNewWalkerPostRequest() throws Exception {
+    when(walkerService.findWalkerById(walker.getDevice_id())).thenReturn(new ArrayList<>());
     when(walkerService.addNewWalker(walker)).thenReturn(walker.isValid());
 
     mockMvc.perform(post("/walker")
@@ -110,6 +111,17 @@ public class WalkerControllerTests {
     }
 
     return jsonContent;
+  }
+
+  @Test
+  public void returnsBadRequestIfDeviceIdAlreadyExistsInWalkersTableOnDB() throws Exception {
+    when(walkerService.findWalkerById(walker.getDevice_id())).thenReturn(Collections.singletonList(walker));
+    verify(walkerService, never()).addNewWalker(walker);
+
+    mockMvc.perform(post("/walker")
+            .content(asJsonString(walker))
+            .contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(status().isBadRequest());
   }
 
   @Test

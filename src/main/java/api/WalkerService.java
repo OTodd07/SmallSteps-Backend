@@ -11,7 +11,7 @@ public class WalkerService {
 
   private final Database db = new PsqlDB();
 
-  public List<Walker> findWalkerById(String deviceId) throws Exception {
+  public List<Walker> findWalkerById(String deviceId) throws SQLException, ClassNotFoundException {
     db.openConnection();
 
     String query = String.format("SELECT * FROM walkers WHERE device_id = '%s'", deviceId);
@@ -21,8 +21,20 @@ public class WalkerService {
     return walkers;
   }
 
-  public boolean addNewWalker(Walker walker) throws SQLException {
-    return walker.isValid();
+  public boolean addNewWalker(Walker walker) throws SQLException, ClassNotFoundException {
+    if (!walker.isValid()) return false;
+
+    boolean status;
+    db.openConnection();
+
+    // Perform insert
+    String insertQuery = String.format("INSERT INTO walkers (device_id, name, picture, phone_number)" +
+            "VALUES('%s', '%s', '%s', '%s')", walker.getDevice_id(), walker.getName(),
+            walker.getPicture(), walker.getPhone_number());
+    status = db.executeInsertQuery(insertQuery);
+
+    db.closeConnection();
+    return status;
   }
 
 }

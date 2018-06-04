@@ -27,31 +27,27 @@ public class PsqlDB implements Database {
   }
 
   @Override
-  public List<List<String>> executeSelectQuery(String sql) {
+  public List<List<String>> executeSelectQuery(String sql) throws SQLException {
     List<List<String>> response = new ArrayList<>();
-    try {
-      ResultSet result = conn.createStatement().executeQuery(sql);
-      while (result.next()) {
-        List<String> row = new ArrayList<>();
-        int colCount = result.getMetaData().getColumnCount();
-        for (int i = 1; i <= colCount; ++i) row.add(result.getString(i));
-        response.add(row);
-      }
-    } catch (SQLException exception) {
-      exception.printStackTrace();
+    ResultSet result = conn.createStatement().executeQuery(sql);
+    while (result.next()) {
+      List<String> row = new ArrayList<>();
+      int colCount = result.getMetaData().getColumnCount();
+      for (int i = 1; i <= colCount; ++i) row.add(result.getString(i));
+      response.add(row);
     }
     return response;
   }
 
   @Override
-  public boolean closeConnection() {
-    try {
-      conn.close();
-    } catch (SQLException exception) {
-      exception.printStackTrace();
-      return false;
-    }
-    return true;
+  public boolean executeInsertQuery(String sql) throws SQLException {
+    return conn.createStatement().executeUpdate(sql) != 0;
+  }
+
+  @Override
+  public boolean closeConnection() throws SQLException {
+    conn.close();
+    return conn.isClosed();
   }
 
 }

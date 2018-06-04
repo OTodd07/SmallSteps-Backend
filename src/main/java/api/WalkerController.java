@@ -28,7 +28,7 @@ public class WalkerController {
       if (walkers.size() == 0) {
         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
       }
-    } catch (Exception e) {
+    } catch (SQLException | ClassNotFoundException e) {
       response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
     }
 
@@ -37,18 +37,15 @@ public class WalkerController {
 
   @PostMapping
   public ResponseEntity<String> post(@RequestBody Walker walker) {
-    boolean status = false;
-    ResponseEntity<String> response;
-
     try {
-      status = walkerService.addNewWalker(walker);
-      response = new ResponseEntity<>(status ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
-    } catch (SQLException exception) {
-      response = new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
-    }
+      boolean status = walkerService.findWalkerById(walker.getDevice_id()).isEmpty();
+      if (!status) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
-    System.out.println(walker);
-    return response;
+      status = walkerService.addNewWalker(walker);
+      return new ResponseEntity<>(status ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
+    } catch (SQLException | ClassNotFoundException exception) {
+      return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+    }
   }
 
 }

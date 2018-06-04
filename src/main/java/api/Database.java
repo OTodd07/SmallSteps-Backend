@@ -7,8 +7,10 @@ public interface Database {
 
   boolean openConnection() throws SQLException, ClassNotFoundException;
 
-  List<List<String>> executeSelectQuery(String sql);
+  List<List<String>> executeSelectQuery(String sql) throws SQLException;
 
-  boolean closeConnection();
+  boolean executeInsertQuery(String sql) throws SQLException;
+
+  boolean closeConnection() throws SQLException;
 
 }
