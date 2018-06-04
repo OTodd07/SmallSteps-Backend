@@ -33,9 +33,8 @@ public class PsqlDB implements Database {
       ResultSet result = conn.createStatement().executeQuery(sql);
       while (result.next()) {
         List<String> row = new ArrayList<>();
-        ResultSetMetaData metaData = result.getMetaData();
-        int colCount = metaData.getColumnCount();
-        for (int i = 1; i <= colCount; ++i) row.add(metaData.getColumnName(i));
+        int colCount = result.getMetaData().getColumnCount();
+        for (int i = 1; i <= colCount; ++i) row.add(result.getString(i));
         response.add(row);
       }
     } catch (SQLException exception) {

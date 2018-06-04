@@ -52,7 +52,7 @@ public class WalkerControllerTests {
   public void setUp() {
     Mockito.reset(walkerService);
     mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-    walker = new Walker("id","","","");
+    walker = new Walker("id","Walker","walker.jpg","123");
   }
 
   @Test
@@ -62,7 +62,10 @@ public class WalkerControllerTests {
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith("application/json"))
             .andExpect(jsonPath("$", hasSize(1)))
-            .andExpect(jsonPath("$[0].device_id", is("id")));
+            .andExpect(jsonPath("$[0].device_id", is("id")))
+            .andExpect(jsonPath("$[0].name", is("Walker")))
+            .andExpect(jsonPath("$[0].picture", is("walker.jpg")))
+            .andExpect(jsonPath("$[0].phone_number", is("123")));
   }
 
   @Test
