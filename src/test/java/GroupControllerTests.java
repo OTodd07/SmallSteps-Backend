@@ -30,6 +30,7 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -134,6 +135,20 @@ public class GroupControllerTests {
   }
 
   @Test
+  public void returnsOkStatusIfJoinRequestIsValid() throws Exception {
+    when(groupService.joinGroup("w_id","g_id")).thenReturn(true);
+    mockMvc.perform(put("/groups?walker_id=w_id&group_id=g_id"))
+            .andExpect(status().isOk());
+  }
+
+  @Test
+  public void returnsBadRequestIfJoinRequestIsInvalid() throws Exception {
+    when(groupService.joinGroup("w_id","g_id")).thenReturn(false);
+    mockMvc.perform(put("/groups?walker_id=w_id&group_id=g_id"))
+            .andExpect(status().isBadRequest());
+  }
+
+  @Test
   public void returnsOkStatusIfGroupToBeAddedIsValid() throws Exception {
     when(groupService.addNewGroup(group)).thenReturn(group.isValid());
     mockMvc.perform(post("/groups")
@@ -141,6 +156,9 @@ public class GroupControllerTests {
             .contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
   }
+
+
+
 
 
   private static String asJsonString(final Object obj) {
