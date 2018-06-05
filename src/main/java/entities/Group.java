@@ -10,7 +10,7 @@ public class Group {
   private String time;
   private String admin_id;
   private String location_latitude;
-  private String location_longitutde;
+  private String location_longitude;
   private String duration;
   private boolean has_dogs;
   private boolean has_kids;
@@ -26,7 +26,7 @@ public class Group {
     this.time = time;
     this.admin_id = admin_id;
     this.location_latitude = location_latitude;
-    this.location_longitutde = location_longitutde;
+    this.location_longitude = location_longitutde;
     this.duration = duration;
     this.has_dogs = has_dogs;
     this.has_kids = has_kids;
@@ -52,8 +52,8 @@ public class Group {
     return location_latitude;
   }
 
-  public String getLocation_longitutde() {
-    return location_longitutde;
+  public String getLocation_longitude() {
+    return location_longitude;
   }
 
   public String getDuration() {
@@ -88,8 +88,8 @@ public class Group {
     this.location_latitude = location_latitude;
   }
 
-  public void setLocation_longitutde(String location_longitutde) {
-    this.location_longitutde = location_longitutde;
+  public void setLocation_longitude(String location_longitude) {
+    this.location_longitude = location_longitude;
   }
 
   public void setDuration(String duration) {
@@ -112,7 +112,7 @@ public class Group {
             ", time='" + time + '\'' +
             ", admin_id='" + admin_id + '\'' +
             ", location_latitude='" + location_latitude + '\'' +
-            ", location_longitutde='" + location_longitutde + '\'' +
+            ", location_longitude='" + location_longitude + '\'' +
             ", duration='" + duration + '\'' +
             ", has_dogs=" + has_dogs +
             ", has_kids=" + has_kids +
