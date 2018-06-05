@@ -11,6 +11,8 @@ public interface Database {
 
   boolean executeInsertQuery(String sql) throws SQLException;
 
+  boolean executeDeleteQuery(String sql) throws SQLException;
+
   boolean closeConnection() throws SQLException;
 
 }

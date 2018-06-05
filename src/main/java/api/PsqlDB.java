@@ -56,4 +56,8 @@ public class PsqlDB implements Database {
     return conn.isClosed();
   }
 
+  @Override
+  public boolean executeDeleteQuery(String sql) throws SQLException {
+    return conn.createStatement().executeUpdate(sql) != 0;
+  }
 }

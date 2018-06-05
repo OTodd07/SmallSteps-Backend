@@ -1,7 +1,11 @@
 package entities;
 
+import javax.xml.datatype.Duration;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.lang.reflect.Field;
 
 public class Group {
 
@@ -124,4 +128,85 @@ public class Group {
     return results.stream().map(row -> new Group(row.get(0), row.get(1), row.get(2), row.get(3),
                        row.get(4), row.get(5), row.get(6), Boolean.valueOf(row.get(7)),Boolean.valueOf(row.get(8)))).collect(Collectors.toList());
   }
+
+  public boolean isValid() {
+
+    // Null checks
+    Field[] fields = getClass().getDeclaredFields();
+    for (Field field : fields) {
+      try {
+        if (field.get(this) == null) return false;
+      } catch (IllegalAccessException e) {
+        return false;
+      }
+    }
+
+
+    if (admin_id.length() != 36) return false;
+
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-M-d H:m:s");
+
+    try{
+      formatter.parse(time);
+    } catch (ParseException e) {
+      return false;
+    }
+
+    try {
+      String[] parts = duration.split(":");
+      java.time.Duration.parse(String.format("PT%sH%sM%sS",parts[0],parts[1],parts[2]));
+    } catch (Exception e) {
+      return false;
+    }
+
+    try {
+      Double.parseDouble(location_latitude);
+    } catch (Exception e) {
+      return false;
+    }
+
+    try {
+      Double.parseDouble(location_longitude);
+    } catch (Exception e) {
+      return false;
+    }
+
+
+
+    return true;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    Group group = (Group) o;
+
+    if (has_dogs != group.has_dogs) return false;
+    if (has_kids != group.has_kids) return false;
+    if (!id.equals(group.id)) return false;
+    if (!name.equals(group.name)) return false;
+    if (!time.equals(group.time)) return false;
+    if (!admin_id.equals(group.admin_id)) return false;
+    if (!location_latitude.equals(group.location_latitude)) return false;
+    if (!location_longitude.equals(group.location_longitude)) return false;
+    return duration.equals(group.duration);
+  }
+
+  @Override
+  public int hashCode() {
+    int result = id.hashCode();
+    result = 31 * result + name.hashCode();
+    result = 31 * result + time.hashCode();
+    result = 31 * result + admin_id.hashCode();
+    result = 31 * result + location_latitude.hashCode();
+    result = 31 * result + location_longitude.hashCode();
+    result = 31 * result + duration.hashCode();
+    result = 31 * result + (has_dogs ? 1 : 0);
+    result = 31 * result + (has_kids ? 1 : 0);
+    return result;
+  }
+
+
 }
