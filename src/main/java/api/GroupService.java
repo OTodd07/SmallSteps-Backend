@@ -36,7 +36,13 @@ public class GroupService {
 
     db.openConnection();
 
-    // TODO check if admin made another group at same time - return false if so.
+
+    String lookForGroup = String.format("SELECT * FROM groups where admin_id = '%s' AND time = '%s'",
+            group.getAdmin_id(), group.getTime());
+    List<Group> groups = Group.fromString(db.executeSelectQuery(lookForGroup));
+    if(!groups.isEmpty()) {
+      return false;
+    }
 
     String createGroup = String.format("INSERT into groups (name, time, admin_id, location_latitude, location_longitude, " +
                     "duration, has_dogs, has_kids) values ('%s', '%s', '%s', '%s', '%s', '%s', %b, %b)",
