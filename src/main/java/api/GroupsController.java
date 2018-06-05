@@ -19,13 +19,14 @@ public class GroupsController {
 
   @GetMapping
   @ResponseBody
-  public List<Group> get(@RequestParam("deviceId") Optional<String> deviceId,
+  public List<Group> get(@RequestParam("device_id") Optional<String> deviceId,
                          HttpServletResponse response) {
     List<Group> groups = new ArrayList<>();
 
     try {
       groups = deviceId.isPresent() ? groupService.getGroupsByDeviceId(deviceId.get())
               : groupService.getAllGroups();
+      if (groups.isEmpty()) response.setStatus(HttpServletResponse.SC_NOT_FOUND);
     } catch (SQLException | ClassNotFoundException exception) {
       response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
     }

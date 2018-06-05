@@ -13,12 +13,15 @@ public class GroupService {
 
   public List<Group> getGroupsByDeviceId(String deviceId) throws SQLException, ClassNotFoundException {
     db.openConnection();
-    String query = String.format("SELECT * FROM groups WHERE device_id = %s", deviceId);
+
+    String query = String.format("SELECT groups.* FROM walkers_groups " +
+            "INNER JOIN walkers ON walkers.device_id = walkers_groups.walker_id " +
+            "INNER JOIN groups ON groups.id = walkers_groups.group_id WHERE walkers.device_id = '%s'", deviceId);
+
     List<Group> groups = Group.fromString(db.executeSelectQuery(query));
     db.closeConnection();
     return groups;
   }
-
 
   public List<Group> getAllGroups() throws SQLException, ClassNotFoundException {
     db.openConnection();
