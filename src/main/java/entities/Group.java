@@ -85,7 +85,7 @@ public class Group {
   }
 
   public void setAdmin_id(String admin_id) {
-    this.admin_id = admin_id;
+    this.admin_id = admin_id.trim();
   }
 
   public void setLocation_latitude(String location_latitude) {
@@ -134,6 +134,8 @@ public class Group {
     // Null checks
     Field[] fields = getClass().getDeclaredFields();
     for (Field field : fields) {
+      if (field.getName().equals("id")) continue;
+
       try {
         if (field.get(this) == null) return false;
       } catch (IllegalAccessException e) {

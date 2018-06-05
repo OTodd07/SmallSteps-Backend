@@ -52,7 +52,7 @@ public class Walker {
   }
 
   public void setDevice_id(String device_id) {
-    this.device_id = device_id;
+    this.device_id = device_id.trim();
   }
 
   public void setName(String name) {

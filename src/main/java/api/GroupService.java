@@ -31,25 +31,38 @@ public class GroupService {
   }
 
   public boolean addNewGroup(Group group) throws SQLException, ClassNotFoundException {
-    boolean status;
-    if(!group.isValid()) {
-      return false;
-    }
-    db.openConnection();
-    String createGroup = String.format("INSERT into groups (id , name, time, admin_id, location_latitude, location_longitude, " +
-            "duration, has_dogs, has_kids) values ('%s', '%s', '%s', '%s', '%s', '%s', '%s', %b, %b)", group.getId(),
-             group.getName(), group.getTime(), group.getAdmin_id(), group.getLocation_latitude(),group.getLocation_longitude(),
-             group.getDuration(),group.isHas_dogs(),group.isHas_kids());
-    status = db.executeInsertQuery(createGroup);
+    boolean status = true;
+    if (!group.isValid()) return false;
 
-    if(!status) {
+    db.openConnection();
+
+    // TODO check if admin made another group at same time - return false if so.
+
+    String createGroup = String.format("INSERT into groups (name, time, admin_id, location_latitude, location_longitude, " +
+                    "duration, has_dogs, has_kids) values ('%s', '%s', '%s', '%s', '%s', '%s', %b, %b)",
+            group.getName(), group.getTime(), group.getAdmin_id(), group.getLocation_latitude(), group.getLocation_longitude(),
+            group.getDuration(), group.isHas_dogs(), group.isHas_kids());
+    try {
+      status = db.executeInsertQuery(createGroup);
+    } catch (Exception e) {
+      System.out.println("First insert failed");
+      System.out.println(createGroup);
+      e.printStackTrace();
+    }
+
+    if (!status) {
       String deleteGroup = String.format("DELETE from groups where id = '%s'", group.getId());
       db.executeDeleteQuery(deleteGroup);
       return false;
     }
 
+    String getGroup = String.format("SELECT * FROM groups WHERE admin_id = '%s' AND time = '%s'", group.getAdmin_id(), group.getTime());
+    List<Group> groups = Group.fromString(db.executeSelectQuery(getGroup));
+
+    group.setId(groups.get(0).getId());
+
     String addAdmin = String.format("INSERT into walkers_groups (walker_id, group_id) values ('%s','%s')",
-            group.getAdmin_id(),group.getId());
+            group.getAdmin_id(), group.getId());
 
     status = db.executeInsertQuery(addAdmin);
 
