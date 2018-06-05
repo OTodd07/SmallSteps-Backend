@@ -45,4 +45,13 @@ public class GroupsController {
     }
   }
 
+  @PostMapping
+  public ResponseEntity<?> join(@RequestParam(value = "walker_id") String walkerID, @RequestParam(value = "group_id") String group_id) {
+    try {
+      return new ResponseEntity<Object>(groupService.joinGroup(walkerID,group_id) ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
+    } catch (SQLException | ClassNotFoundException exception) {
+      return new ResponseEntity<Object>(HttpStatus.SERVICE_UNAVAILABLE);
+    }
+  }
+
 }

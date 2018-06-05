@@ -77,4 +77,14 @@ public class GroupService {
 
     return status;
   }
+
+  public boolean joinGroup(String walkerID, String group_id) throws SQLException , ClassNotFoundException {
+    boolean status;
+    db.openConnection();
+    String joinGroup = String.format("INSERT into walkers_groups(walker_id, group_id) values ('%s', '%s')"
+                                       , walkerID, group_id);
+    status = db.executeInsertQuery(joinGroup);
+    db.closeConnection();
+    return status;
+  }
 }
