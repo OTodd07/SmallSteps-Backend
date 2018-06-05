@@ -1,6 +1,9 @@
 package entities;
 
 import java.lang.reflect.Field;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,6 +24,16 @@ public class Walker {
     this.picture = picture;
     this.phone_number = phone_number;
   }
+
+  public Walker(ResultSet rs) throws SQLException {
+
+    this.device_id    = rs.getString(1);
+    this.name         = rs.getString(2);
+    this.picture      = rs.getString(3);
+    this.phone_number = rs.getString(4);
+  }
+
+
 
   public String getDevice_id() {
     return device_id;

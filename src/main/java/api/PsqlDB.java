@@ -26,7 +26,13 @@ public class PsqlDB implements Database {
     return true;
   }
 
-  @Override
+  public ResultSet queryTable(String sql) throws SQLException {
+    return conn.createStatement().executeQuery(sql);
+  }
+
+
+
+    @Override
   public List<List<String>> executeSelectQuery(String sql) throws SQLException {
     List<List<String>> response = new ArrayList<>();
     ResultSet result = conn.createStatement().executeQuery(sql);

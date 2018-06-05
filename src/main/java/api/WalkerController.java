@@ -48,9 +48,5 @@ public class WalkerController {
     }
   }
 
-//  @PostMapping
-//  public ResponseEntity<String> createWalkingGroup(@RequestBody) {
-//    return null;
-//  }
 
 }

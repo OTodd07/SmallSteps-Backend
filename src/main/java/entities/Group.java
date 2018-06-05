@@ -1,5 +1,8 @@
 package entities;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class Group {
 
   private String id;
@@ -99,5 +102,26 @@ public class Group {
 
   public void setHas_kids(boolean has_kids) {
     this.has_kids = has_kids;
+  }
+
+  @Override
+  public String toString() {
+    return "Group{" +
+            "id='" + id + '\'' +
+            ", name='" + name + '\'' +
+            ", time='" + time + '\'' +
+            ", admin_id='" + admin_id + '\'' +
+            ", location_latitude='" + location_latitude + '\'' +
+            ", location_longitutde='" + location_longitutde + '\'' +
+            ", duration='" + duration + '\'' +
+            ", has_dogs=" + has_dogs +
+            ", has_kids=" + has_kids +
+            '}';
+  }
+
+
+  public static List<Group> fromString(List<List<String>> results) {
+    return results.stream().map(row -> new Group(row.get(0), row.get(1), row.get(2), row.get(3),
+                       row.get(4), row.get(5), row.get(6), Boolean.valueOf(row.get(7)),Boolean.valueOf(row.get(8)))).collect(Collectors.toList());
   }
 }
