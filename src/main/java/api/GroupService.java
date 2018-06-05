@@ -37,18 +37,18 @@ public class GroupService {
     }
     db.openConnection();
     String createGroup = String.format("INSERT into groups (id , name, time, admin_id, location_latitude, location_longitude, " +
-            "duration, has_dogs, has_kids) values (%s, %s, %s, %s, %s, %s, %s, %b, %b)", group.getId(),
+            "duration, has_dogs, has_kids) values ('%s', '%s', '%s', '%s', '%s', '%s', '%s', %b, %b)", group.getId(),
              group.getName(), group.getTime(), group.getAdmin_id(), group.getLocation_latitude(),group.getLocation_longitude(),
              group.getDuration(),group.isHas_dogs(),group.isHas_kids());
     status = db.executeInsertQuery(createGroup);
 
     if(!status) {
-      String deleteGroup = String.format("DELETE from groups where id = %s", group.getId());
+      String deleteGroup = String.format("DELETE from groups where id = '%s'", group.getId());
       db.executeDeleteQuery(deleteGroup);
       return false;
     }
 
-    String addAdmin = String.format("Insert into walkers_groups (walker_id, group_id) values (%s,%s)",
+    String addAdmin = String.format("INSERT into walkers_groups (walker_id, group_id) values ('%s','%s')",
             group.getAdmin_id(),group.getId());
 
     status = db.executeInsertQuery(addAdmin);
