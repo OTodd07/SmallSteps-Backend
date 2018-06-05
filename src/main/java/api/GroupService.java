@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public class GroupService {
 
-  private final PsqlDB db = new PsqlDB();
+  private final Database db = new PsqlDB();
 
   public List<Group> getGroupsByDeviceId(String deviceId) throws SQLException, ClassNotFoundException {
     db.openConnection();
@@ -25,8 +25,7 @@ public class GroupService {
 
   public List<Group> getAllGroups() throws SQLException, ClassNotFoundException {
     db.openConnection();
-    String query = String.format("SELECT * FROM groups");
-    List<Group> groups = Group.fromString(db.executeSelectQuery(query));
+    List<Group> groups = Group.fromString(db.executeSelectQuery("SELECT * FROM groups"));
     db.closeConnection();
     return groups;
   }

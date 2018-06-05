@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class WalkerControllerTests {
 
   @Configuration
-  static class Config{
+  static class Config {
     @Bean
     public WalkerService walkerService() {
       return new WalkerService();

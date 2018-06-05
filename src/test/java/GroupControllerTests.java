@@ -36,22 +36,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 public class GroupControllerTests {
 
-
   @Configuration
-  static class Config{
+  static class Config {
     @Bean
     public GroupService groupService() {
       return new GroupService();
     }
   }
 
-
-
   private MockMvc mockMvc;
 
   private Group group;
-  private Group group1;
-  private Walker walker;
 
   @Mock
   private GroupService groupService;
@@ -63,11 +58,8 @@ public class GroupControllerTests {
   public void setUp() {
     Mockito.reset(groupService);
     mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-    walker = new Walker("wpefhflaimcbcypsygywqqyutvtxvbhpdnlb",
-            "Alice", "alice.jpg", "12345678901");
-    group = new Group("id","","","wpefhflaimcbcypsygywqqyutvtxvbhpdnlb","","","",false,false);
-    group1 = new Group("id1","","","wpefhflaimcbcypsygywqqyutvtxvbhpdnlb","","","",false,false);
-
+    group = new Group("id", "", "", "wpefhflaimcbcypsygywqqyutvtxvbhpdnlb",
+            "", "", "", false, false);
   }
 
   @Test
@@ -79,7 +71,6 @@ public class GroupControllerTests {
             .andExpect(jsonPath("$", hasSize(0)));
   }
 
-
   @Test
   public void getRequestForAllGroupsWhenNoGroupsInTheDBReturnsNotFoundResponse() throws Exception {
     when(groupService.getAllGroups()).thenReturn(new ArrayList<>());
@@ -89,10 +80,11 @@ public class GroupControllerTests {
             .andExpect(jsonPath("$", hasSize(0)));
   }
 
-
   @Test
   public void getRequestForGroupInTheDBWhenPresentReturnsOkResponse() throws Exception {
-    when(groupService.getGroupsByDeviceId("wpefhflaimcbcypsygywqqyutvtxvbhpdnlb")).thenReturn(Collections.singletonList(group));
+    when(groupService.getGroupsByDeviceId("wpefhflaimcbcypsygywqqyutvtxvbhpdnlb"))
+            .thenReturn(Collections.singletonList(group));
+
     mockMvc.perform(get("/groups?device_id=wpefhflaimcbcypsygywqqyutvtxvbhpdnlb"))
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith("application/json"))
@@ -106,14 +98,12 @@ public class GroupControllerTests {
             .andExpect(jsonPath("$[0].duration", is("")))
             .andExpect(jsonPath("$[0].has_dogs", is(false)))
             .andExpect(jsonPath("$[0].has_kids", is(false)));
-
-//
   }
 
   @Test
   public void getRequestForAllGroupsInTheDBWhenGroupsPresentReturnsOkResponse() throws Exception {
     when(groupService.getAllGroups()).thenReturn(Arrays.asList(group));
-    mockMvc.perform(get("/group"))
+    mockMvc.perform(get("/groups"))
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith("application/json"))
             .andExpect(jsonPath("$", hasSize(1)))
@@ -127,7 +117,5 @@ public class GroupControllerTests {
             .andExpect(jsonPath("$[0].has_dogs", is(false)))
             .andExpect(jsonPath("$[0].has_kids", is(false)));
   }
-
-
 
 }
