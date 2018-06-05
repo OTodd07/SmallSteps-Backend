@@ -39,8 +39,8 @@ public class GroupService {
 
     String lookForGroup = String.format("SELECT * FROM groups where admin_id = '%s' AND time = '%s'",
             group.getAdmin_id(), group.getTime());
-    List<Group> groups = Group.fromString(db.executeSelectQuery(lookForGroup));
-    if(!groups.isEmpty()) {
+    List<Group> duplicate = Group.fromString(db.executeSelectQuery(lookForGroup));
+    if(!duplicate.isEmpty()) {
       return false;
     }
 
