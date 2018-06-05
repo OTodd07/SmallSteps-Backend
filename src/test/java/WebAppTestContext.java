@@ -1,4 +1,6 @@
+import api.GroupService;
 import api.WalkerService;
+import org.hibernate.validator.internal.xml.binding.GroupsType;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,5 +12,8 @@ public class WebAppTestContext {
   public WalkerService walkerService() {
     return Mockito.mock(WalkerService.class);
   }
+
+  @Bean
+  public GroupService groupService() {return Mockito.mock(GroupService.class);}
 
 }
