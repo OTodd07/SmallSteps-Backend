@@ -30,4 +30,7 @@ public class GroupService {
     return groups;
   }
 
+  public boolean addNewGroup(Group group) throws SQLException, ClassNotFoundException {
+    return false;
+  }
 }

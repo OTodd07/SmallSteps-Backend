@@ -36,7 +36,7 @@ public class WalkerController {
   }
 
   @PostMapping
-  public ResponseEntity<String> post(@RequestBody Walker walker) {
+  public ResponseEntity<?> post(@RequestBody Walker walker) {
     try {
       boolean status = walkerService.findWalkerById(walker.getDevice_id()).isEmpty();
       if (!status) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

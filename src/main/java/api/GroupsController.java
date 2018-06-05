@@ -2,6 +2,8 @@ package api;
 
 import entities.Group;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -32,6 +34,15 @@ public class GroupsController {
     }
 
     return groups;
+  }
+
+  @PostMapping
+  public ResponseEntity<?> post(@RequestBody Group group) {
+    try {
+      return new ResponseEntity<>(groupService.addNewGroup(group) ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
+    } catch (SQLException | ClassNotFoundException exception) {
+      return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+    }
   }
 
 }
