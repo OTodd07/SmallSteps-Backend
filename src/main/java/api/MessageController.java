@@ -8,7 +8,6 @@ import java.util.Date;
 
 public class MessageController {
 
-
   @MessageMapping("/notifyWalkers")
   @SendTo("/all/messages")
   public OutputMessage send(Message message) throws Exception {

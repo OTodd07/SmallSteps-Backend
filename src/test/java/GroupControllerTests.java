@@ -49,7 +49,6 @@ public class GroupControllerTests {
   }
 
   private MockMvc mockMvc;
-
   private Group group;
   private Group badGroup;
 
@@ -65,8 +64,8 @@ public class GroupControllerTests {
     mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     group = new Group("id", "", "2018-06-10 12:00:00", "wpefhflaimcbcypsygywqqyutvtxvbhpdnlb",
             "51.4989", "51.4989", "01:00:00", false, false);
-    badGroup = new Group("","","","","","",""
-            ,false,false);
+    badGroup = new Group("", "", "", "", "", "", ""
+            , false, false);
   }
 
   @Test
@@ -136,14 +135,14 @@ public class GroupControllerTests {
 
   @Test
   public void returnsOkStatusIfJoinRequestIsValid() throws Exception {
-    when(groupService.joinGroup("w_id","g_id")).thenReturn(true);
+    when(groupService.joinGroup("w_id", "g_id")).thenReturn(true);
     mockMvc.perform(put("/groups?walker_id=w_id&group_id=g_id"))
             .andExpect(status().isOk());
   }
 
   @Test
   public void returnsBadRequestIfJoinRequestIsInvalid() throws Exception {
-    when(groupService.joinGroup("w_id","g_id")).thenReturn(false);
+    when(groupService.joinGroup("w_id", "g_id")).thenReturn(false);
     mockMvc.perform(put("/groups?walker_id=w_id&group_id=g_id"))
             .andExpect(status().isBadRequest());
   }
@@ -156,9 +155,6 @@ public class GroupControllerTests {
             .contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
   }
-
-
-
 
 
   private static String asJsonString(final Object obj) {
