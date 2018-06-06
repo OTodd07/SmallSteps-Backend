@@ -1,12 +1,11 @@
 package entities;
 
-import javax.xml.datatype.Duration;
+import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.lang.reflect.Field;
 
 public class Group {
 
@@ -24,7 +23,6 @@ public class Group {
   public Group() {
 
   }
-
 
   public Group(String id, String name, String time, String admin_id, String location_latitude,
                String location_longitutde, String duration, boolean has_dogs, boolean has_kids) {
@@ -156,7 +154,7 @@ public class Group {
         e.printStackTrace();
       }
 
-      if(currentDate.after(startDate)) {
+      if (currentDate.after(startDate)) {
         is_walking = true;
       }
 
@@ -185,7 +183,7 @@ public class Group {
 
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-M-d H:m:s");
 
-    try{
+    try {
       formatter.parse(time);
     } catch (ParseException e) {
       return false;
@@ -193,7 +191,7 @@ public class Group {
 
     try {
       String[] parts = duration.split(":");
-      java.time.Duration.parse(String.format("PT%sH%sM%sS",parts[0],parts[1],parts[2]));
+      java.time.Duration.parse(String.format("PT%sH%sM%sS", parts[0], parts[1], parts[2]));
     } catch (Exception e) {
       return false;
     }
@@ -209,7 +207,6 @@ public class Group {
     } catch (Exception e) {
       return false;
     }
-
 
 
     return true;
@@ -245,6 +242,31 @@ public class Group {
     result = 31 * result + (has_dogs ? 1 : 0);
     result = 31 * result + (has_kids ? 1 : 0);
     return result;
+  }
+
+  private static double distanceInMetres(String lat1, String lon1, String lat2, String lon2) {
+    double lat1_d = Double.parseDouble(lat1);
+    double lon1_d= Double.parseDouble(lon1);
+    double lat2_d = Double.parseDouble(lat2);
+    double lon2_d = Double.parseDouble(lon2);
+
+    double R = 6371000;
+    double psi_1 = Math.toRadians(lat1_d);
+    double psi_2 = Math.toRadians(lat2_d);
+    double delta_psi = Math.toRadians(lat2_d - lat1_d);
+    double delta_lam = Math.toRadians(lon2_d - lon1_d);
+
+    double a = Math.sin(delta_psi / 2) * Math.sin(delta_lam / 2) +
+            Math.cos(psi_1) * Math.cos(psi_2) * Math.sin(delta_lam / 2) * Math.sin(delta_lam / 2);
+
+    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  }
+
+  private static double coordDistance(double latitude1, double longitude1, double latitude2, double longitude2) {
+    return 6371 * Math.acos(
+            Math.sin(latitude1) * Math.sin(latitude2)
+                    + Math.cos(latitude1) * Math.cos(latitude2) * Math.cos(longitude2 - longitude1));
   }
 
 
