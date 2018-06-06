@@ -32,7 +32,7 @@ public class GroupService {
 
   public boolean addNewGroup(Group group) throws SQLException, ClassNotFoundException {
     boolean status = true;
-    if (!group.isValid()) return false;
+    if (!group.groupValidityCheck()) return false;
 
     db.openConnection();
 

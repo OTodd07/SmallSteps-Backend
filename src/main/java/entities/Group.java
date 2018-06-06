@@ -3,6 +3,7 @@ package entities;
 import javax.xml.datatype.Duration;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.lang.reflect.Field;
@@ -18,13 +19,15 @@ public class Group {
   private String duration;
   private boolean has_dogs;
   private boolean has_kids;
+  private boolean is_walking;
 
   public Group() {
 
   }
 
 
-  public Group(String id, String name, String time, String admin_id, String location_latitude, String location_longitutde, String duration, boolean has_dogs, boolean has_kids) {
+  public Group(String id, String name, String time, String admin_id, String location_latitude,
+               String location_longitutde, String duration, boolean has_dogs, boolean has_kids) {
     this.id = id;
     this.name = name;
     this.time = time;
@@ -34,6 +37,14 @@ public class Group {
     this.duration = duration;
     this.has_dogs = has_dogs;
     this.has_kids = has_kids;
+  }
+
+  public boolean isIs_walking() {
+    return is_walking;
+  }
+
+  public void setIs_walking(boolean is_walking) {
+    this.is_walking = is_walking;
   }
 
   public String getId() {
@@ -125,11 +136,37 @@ public class Group {
 
 
   public static List<Group> fromString(List<List<String>> results) {
-    return results.stream().map(row -> new Group(row.get(0), row.get(1), row.get(2), row.get(3),
-                       row.get(4), row.get(5), row.get(6), Boolean.valueOf(row.get(7)),Boolean.valueOf(row.get(8)))).collect(Collectors.toList());
+    return results.stream().map(row -> {
+      Group group = new Group(row.get(0), row.get(1), row.get(2), row.get(3),
+              row.get(4), row.get(5), row.get(6), Boolean.valueOf(row.get(7)), Boolean.valueOf(row.get(8)));
+
+      // set is_walking
+      boolean is_walking = false;
+
+      String current = new SimpleDateFormat("yyyy-M-d H:m:s").format(new Date());
+      String startTime = group.getTime();
+
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d H:m:s");
+      Date currentDate = null;
+      Date startDate = null;
+      try {
+        currentDate = sdf.parse(current);
+        startDate = sdf.parse(startTime);
+      } catch (ParseException e) {
+        e.printStackTrace();
+      }
+
+      if(currentDate.after(startDate)) {
+        is_walking = true;
+      }
+
+      group.setIs_walking(is_walking);
+      return group;
+    }).collect(Collectors.toList());
+
   }
 
-  public boolean isValid() {
+  public boolean groupValidityCheck() {
 
     // Null checks
     Field[] fields = getClass().getDeclaredFields();

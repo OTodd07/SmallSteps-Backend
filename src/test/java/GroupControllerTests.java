@@ -2,8 +2,6 @@ import api.GroupService;
 import api.GroupsController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import entities.Group;
-import entities.Walker;
-import jdk.nashorn.internal.runtime.ECMAException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +17,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -126,7 +123,7 @@ public class GroupControllerTests {
 
   @Test
   public void returnsBadRequestIfGroupToBeAddedIsInvalid() throws Exception {
-    when(groupService.addNewGroup(badGroup)).thenReturn(badGroup.isValid());
+    when(groupService.addNewGroup(badGroup)).thenReturn(badGroup.groupValidityCheck());
     mockMvc.perform(post("/groups")
             .content(asJsonString(badGroup))
             .contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -149,7 +146,7 @@ public class GroupControllerTests {
 
   @Test
   public void returnsOkStatusIfGroupToBeAddedIsValid() throws Exception {
-    when(groupService.addNewGroup(group)).thenReturn(group.isValid());
+    when(groupService.addNewGroup(group)).thenReturn(group.groupValidityCheck());
     mockMvc.perform(post("/groups")
             .content(asJsonString(group))
             .contentType(MediaType.APPLICATION_JSON_UTF8))
