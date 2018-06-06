@@ -1,0 +1,83 @@
+<html>
+<head>
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+		<title>Small Steps IM</title>
+</head>
+<body onload="disconnect()">
+	<div class="container">
+		<div>
+			<input type="text" id="from" placeholder="Choose a nickname"/>
+		</div>
+		<br />
+		<div>
+			<button id="connect" onclick="connect();">Connect</button>
+			<button id="disconnect" disabled="disabled" onclick="disconnect();">
+				Disconnect
+			</button>
+		</div>
+		<br />
+		<div id="conversationDiv">
+			<input type="text" id="text" placeholder="Write a message..."/>
+			<button id="sendMessage" onclick="sendMessage();">Send</button>
+			<p id="response"></p>
+		</div>
+	</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
+
+<script>
+	let stompClient = null
+
+	function setConnected(connected) {
+		document.getElementById('connect').disabled = connected;
+		document.getElementById('disconnect').disabled = !connected;
+		document.getElementById('conversationDiv').style.visibility = connected ? 'visible' : 'hidden';
+		document.getElementById('response').innerHTML = '';
+	}
+
+	function connect() {
+		var socket = new SockJS('http://localhost:8080/notifyWalkers');
+		stompClient = Stomp.over(socket) 
+		stompClient.connect({}, function(frame) {
+			setConnected(true)
+			console.log('Connected: ' + frame)
+			stompClient.subscribe('/all/messages', function(messageOutput) {
+					showMessageOutput(JSON.parse(messageOutput.body))
+			})
+		})
+	}
+
+	function disconnect() {
+		if (stompClient !== null) stompClient.disconnect()
+		setConnected(false)
+		console.log("Disconnected")
+	}
+
+	function sendMessage() {
+		var from = document.getElementById('from').value;
+		var text = document.getElementById('text').value;
+		stompClient.send("/all/messages", {}, 
+			JSON.stringify({'from':from, 'text':text}))
+	}
+	
+	function showMessageOutput(messageOutput) {
+		var response = document.getElementById('response')
+		var p = document.createElement('p')
+		p.style.wordWrap = 'break-word'
+		p.appendChild(document.createTextNode(messageOutput.from + ": " 
+			+ messageOutput.text + " (" + messageOutput.time + ")"))
+		response.appendChild(p)
+	}
+
+
+</script>
+</body>
+</html>
