@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GroupService {
@@ -23,9 +24,10 @@ public class GroupService {
     return groups;
   }
 
-  public List<Group> getAllGroups() throws SQLException, ClassNotFoundException {
+  public List<Group> getAllGroups(String curLat, String curLong, String radius) throws SQLException, ClassNotFoundException {
     db.openConnection();
-    List<Group> groups = Group.fromString(db.executeSelectQuery("SELECT * FROM groups"));
+    List<Group> groups = Group.fromString(db.executeSelectQuery("SELECT * FROM groups"))
+            .stream().filter(group -> group.distanceInMetres(curLat,curLong) / 1000 <= Double.parseDouble(radius) ).collect(Collectors.toList());
     db.closeConnection();
     return groups;
   }

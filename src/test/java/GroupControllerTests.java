@@ -68,7 +68,7 @@ public class GroupControllerTests {
   @Test
   public void getRequestByIDWhenGroupNotInTheDBReturnsNotFoundResponse() throws Exception {
     when(groupService.getGroupsByDeviceId("id")).thenReturn(new ArrayList<>());
-    mockMvc.perform(get("/groups?device_id=id"))
+    mockMvc.perform(get("/groups?device_id=id&latitude=0&longitude=0"))
             .andExpect(status().isNotFound())
             .andExpect(content().contentTypeCompatibleWith("application/json"))
             .andExpect(jsonPath("$", hasSize(0)));
@@ -76,8 +76,8 @@ public class GroupControllerTests {
 
   @Test
   public void getRequestForAllGroupsWhenNoGroupsInTheDBReturnsNotFoundResponse() throws Exception {
-    when(groupService.getAllGroups()).thenReturn(new ArrayList<>());
-    mockMvc.perform(get("/groups"))
+    when(groupService.getAllGroups("","","")).thenReturn(new ArrayList<>());
+    mockMvc.perform(get("/groups?latitude=0&longitude=0"))
             .andExpect(status().isNotFound())
             .andExpect(content().contentTypeCompatibleWith("application/json"))
             .andExpect(jsonPath("$", hasSize(0)));
@@ -88,7 +88,7 @@ public class GroupControllerTests {
     when(groupService.getGroupsByDeviceId("wpefhflaimcbcypsygywqqyutvtxvbhpdnlb"))
             .thenReturn(Collections.singletonList(group));
 
-    mockMvc.perform(get("/groups?device_id=wpefhflaimcbcypsygywqqyutvtxvbhpdnlb"))
+    mockMvc.perform(get("/groups?device_id=wpefhflaimcbcypsygywqqyutvtxvbhpdnlb&latitude=0&longitude=0"))
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith("application/json"))
             .andExpect(jsonPath("$", hasSize(1)))
@@ -105,8 +105,8 @@ public class GroupControllerTests {
 
   @Test
   public void getRequestForAllGroupsInTheDBWhenGroupsPresentReturnsOkResponse() throws Exception {
-    when(groupService.getAllGroups()).thenReturn(Arrays.asList(group));
-    mockMvc.perform(get("/groups"))
+    when(groupService.getAllGroups("0","0","1.5")).thenReturn(Arrays.asList(group));
+    mockMvc.perform(get("/groups?latitude=0&longitude=0"))
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith("application/json"))
             .andExpect(jsonPath("$", hasSize(1)))

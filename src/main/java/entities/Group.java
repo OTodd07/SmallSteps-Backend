@@ -244,11 +244,11 @@ public class Group {
     return result;
   }
 
-  private static double distanceInMetres(String lat1, String lon1, String lat2, String lon2) {
+  public double distanceInMetres(String lat1, String lon1) {
     double lat1_d = Double.parseDouble(lat1);
     double lon1_d= Double.parseDouble(lon1);
-    double lat2_d = Double.parseDouble(lat2);
-    double lon2_d = Double.parseDouble(lon2);
+    double lat2_d = Double.parseDouble(location_latitude);
+    double lon2_d = Double.parseDouble(location_longitude);
 
     double R = 6371000;
     double psi_1 = Math.toRadians(lat1_d);
