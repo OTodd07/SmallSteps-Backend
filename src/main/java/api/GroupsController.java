@@ -21,14 +21,16 @@ public class GroupsController {
 
   @GetMapping
   @ResponseBody
-  public List<Group> get(@RequestParam("device_id") Optional<String> deviceId, @RequestParam("latitude") String latitude,
-                         @RequestParam("longitude") String longitude, @RequestParam(value = "radius",defaultValue = "1.5") String radius,
+  public List<Group> get(@RequestParam("device_id") Optional<String> deviceId,
+                         @RequestParam("latitude") String latitude,
+                         @RequestParam("longitude") String longitude,
+                         @RequestParam(value = "radius", defaultValue = "1.5") String radius,
                          HttpServletResponse response) {
     List<Group> groups = new ArrayList<>();
 
     try {
       groups = deviceId.isPresent() ? groupService.getGroupsByDeviceId(deviceId.get())
-                                  : groupService.getAllGroups(latitude,longitude,radius);
+              : groupService.getAllGroups(latitude, longitude, radius);
       if (groups.isEmpty()) response.setStatus(HttpServletResponse.SC_NOT_FOUND);
     } catch (SQLException | ClassNotFoundException exception) {
       response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);

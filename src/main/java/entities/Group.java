@@ -246,7 +246,7 @@ public class Group {
 
   public double distanceInMetres(String lat1, String lon1) {
     double lat1_d = Double.parseDouble(lat1);
-    double lon1_d= Double.parseDouble(lon1);
+    double lon1_d = Double.parseDouble(lon1);
     double lat2_d = Double.parseDouble(location_latitude);
     double lon2_d = Double.parseDouble(location_longitude);
 
