@@ -21,18 +21,37 @@ public class GroupsController {
 
   @GetMapping
   @ResponseBody
-  public List<Group> get(@RequestParam("device_id") Optional<String> deviceId, @RequestParam("latitude") String latitude,
-                         @RequestParam("longitude") String longitude, @RequestParam(value = "radius",defaultValue = "1.5") String radius,
+  public List<Group> get(@RequestParam("device_id") Optional<String> deviceId, @RequestParam("latitude") Optional<String> latitude,
+                         @RequestParam("longitude") Optional<String> longitude
+                         , @RequestParam(value = "radius",defaultValue = "1.5") Optional<String> radius,
                          HttpServletResponse response) {
     List<Group> groups = new ArrayList<>();
 
     try {
-      groups = deviceId.isPresent() ? groupService.getGroupsByDeviceId(deviceId.get())
-                                  : groupService.getAllGroups(latitude,longitude,radius);
-      if (groups.isEmpty()) response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-    } catch (SQLException | ClassNotFoundException exception) {
-      response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-    }
+      if (deviceId.isPresent()) {
+
+        if (latitude.isPresent() || longitude.isPresent()) {
+          response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        } else {
+          groups = groupService.getGroupsByDeviceId(deviceId.get());
+          if (groups.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+          }
+        }
+
+      } else {
+        if (!(latitude.isPresent() && longitude.isPresent())) {
+          response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        } else {
+          groups = groupService.getAllGroups(latitude.get(),longitude.get(),"1.5");
+          if (groups.isEmpty()){
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+          }
+        }
+      }
+      } catch(SQLException | ClassNotFoundException exception){
+        response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+      }
 
     return groups;
   }

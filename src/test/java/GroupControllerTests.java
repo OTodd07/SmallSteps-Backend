@@ -68,7 +68,7 @@ public class GroupControllerTests {
   @Test
   public void getRequestByIDWhenGroupNotInTheDBReturnsNotFoundResponse() throws Exception {
     when(groupService.getGroupsByDeviceId("id")).thenReturn(new ArrayList<>());
-    mockMvc.perform(get("/groups?device_id=id&latitude=0&longitude=0"))
+    mockMvc.perform(get("/groups?device_id=id"))
             .andExpect(status().isNotFound())
             .andExpect(content().contentTypeCompatibleWith("application/json"))
             .andExpect(jsonPath("$", hasSize(0)));
@@ -88,7 +88,8 @@ public class GroupControllerTests {
     when(groupService.getGroupsByDeviceId("wpefhflaimcbcypsygywqqyutvtxvbhpdnlb"))
             .thenReturn(Collections.singletonList(group));
 
-    mockMvc.perform(get("/groups?device_id=wpefhflaimcbcypsygywqqyutvtxvbhpdnlb&latitude=0&longitude=0"))
+//    mockMvc.perform(get("/groups?device_id=wpefhflaimcbcypsygywqqyutvtxvbhpdnlb&latitude=0&longitude=0"))
+    mockMvc.perform(get("/groups?device_id=wpefhflaimcbcypsygywqqyutvtxvbhpdnlb"))
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith("application/json"))
             .andExpect(jsonPath("$", hasSize(1)))
@@ -101,6 +102,13 @@ public class GroupControllerTests {
             .andExpect(jsonPath("$[0].duration", is("01:00:00")))
             .andExpect(jsonPath("$[0].has_dogs", is(false)))
             .andExpect(jsonPath("$[0].has_kids", is(false)));
+  }
+
+  @Test
+  public void getRequestWithDeviceIDAndLatAndLongReturnsBadRequest() throws Exception {
+    mockMvc.perform(get("/groups?device_id=wpefhflaimcbcypsygywqqyutvtxvbhpdnlb&latitude=0&longitude=0"))
+            .andExpect(status().isBadRequest());
+
   }
 
   @Test
