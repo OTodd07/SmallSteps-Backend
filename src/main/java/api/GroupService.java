@@ -50,19 +50,20 @@ public class GroupService {
                     "duration, has_dogs, has_kids) values ('%s', '%s', '%s', '%s', '%s', '%s', %b, %b)",
             group.getName(), group.getTime(), group.getAdmin_id(), group.getLocation_latitude(), group.getLocation_longitude(),
             group.getDuration(), group.isHas_dogs(), group.isHas_kids());
-    try {
       status = db.executeInsertQuery(createGroup);
-    } catch (Exception e) {
-      System.out.println("First insert failed");
-      System.out.println(createGroup);
-      e.printStackTrace();
-    }
-
-    if (!status) {
-      String deleteGroup = String.format("DELETE from groups where id = '%s'", group.getId());
-      db.executeDeleteQuery(deleteGroup);
-      return false;
-    }
+//    try {
+//      status = db.executeInsertQuery(createGroup);
+//    } catch (Exception e) {
+//      System.out.println("First insert failed");
+//      System.out.println(createGroup);
+//      e.printStackTrace();
+//    }
+//
+//    if (!status) {
+//      String deleteGroup = String.format("DELETE from groups where id = '%s'", group.getId());
+//      db.executeDeleteQuery(deleteGroup);
+//      return false;
+//    }
 
     String getGroup = String.format("SELECT * FROM groups WHERE admin_id = '%s' AND time = '%s'", group.getAdmin_id(), group.getTime());
     List<Group> groups = Group.fromString(db.executeSelectQuery(getGroup));
