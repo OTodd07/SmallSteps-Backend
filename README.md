@@ -1,1 +1,1 @@
-# Small Steps - Back End
+# Small Steps - Back End ![Build Status](https://gitlab.doc.ic.ac.uk/g1727129/small-steps-backend/badges/master/build.svg)
