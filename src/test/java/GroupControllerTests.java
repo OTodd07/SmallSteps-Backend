@@ -25,9 +25,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -158,6 +156,21 @@ public class GroupControllerTests {
     mockMvc.perform(post("/groups")
             .content(asJsonString(group))
             .contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(status().isOk());
+  }
+
+
+  @Test
+  public void returnsBadRequestIfDeleteRequestIsInvalid() throws Exception {
+    when(groupService.deleteFromGroup("w_id", "g_id")).thenReturn(false);
+    mockMvc.perform(delete("/groups?walker_id=w_id&group_id=g_id"))
+            .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  public void returnsOkStatusIfDeleteRequestIsValid() throws Exception {
+    when(groupService.deleteFromGroup("w_id", "g_id")).thenReturn(true);
+    mockMvc.perform(delete("/groups?walker_id=w_id&group_id=g_id"))
             .andExpect(status().isOk());
   }
 

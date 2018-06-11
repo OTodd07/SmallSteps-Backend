@@ -90,4 +90,13 @@ public class GroupService {
     db.closeConnection();
     return status;
   }
+
+  public boolean deleteFromGroup(String walkerID, String group_id) throws SQLException , ClassNotFoundException {
+    boolean status;
+    db.openConnection();
+    String delete = String.format("DELETE FROM walkers_groups WHERE group_id = '%s' AND walker_id = '%s'",walkerID
+                                   , group_id);
+    status = db.executeInsertQuery(delete);
+    return status;
+  }
 }

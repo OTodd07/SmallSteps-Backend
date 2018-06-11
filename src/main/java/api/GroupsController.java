@@ -75,4 +75,14 @@ public class GroupsController {
     }
   }
 
+  @DeleteMapping
+  public ResponseEntity<?> delete(@RequestParam(value = "walker_id") String walkerID,
+                                  @RequestParam(value = "group_id" ) String group_id) {
+
+    try {
+      return new ResponseEntity<>(groupService.deleteFromGroup(walkerID, group_id) ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
+    } catch (SQLException | ClassNotFoundException exception) {
+      return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+    }
+  }
 }
