@@ -47,9 +47,9 @@ public class GroupService {
     }
 
     String createGroup = String.format("INSERT into groups (name, time, admin_id, location_latitude, location_longitude, " +
-                    "duration, has_dogs, has_kids) values ('%s', '%s', '%s', '%s', '%s', '%s', %b, %b)",
+                    "duration, has_dogs, has_kids) values ('%s', '%s', '%s', '%s', '%s', '%s', %b, %b, '%s)",
             group.getName(), group.getTime(), group.getAdmin_id(), group.getLocation_latitude(), group.getLocation_longitude(),
-            group.getDuration(), group.isHas_dogs(), group.isHas_kids());
+            group.getDuration(), group.isHas_dogs(), group.isHas_kids(), group.getDescription());
       status = db.executeInsertQuery(createGroup);
 //    try {
 //      status = db.executeInsertQuery(createGroup);

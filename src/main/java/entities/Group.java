@@ -19,13 +19,14 @@ public class Group {
   private boolean has_dogs;
   private boolean has_kids;
   private boolean is_walking;
+  private String description;
 
   public Group() {
 
   }
 
   public Group(String id, String name, String time, String admin_id, String location_latitude,
-               String location_longitutde, String duration, boolean has_dogs, boolean has_kids) {
+               String location_longitutde, String duration, boolean has_dogs, boolean has_kids, String description) {
     this.id = id;
     this.name = name;
     this.time = time;
@@ -35,6 +36,7 @@ public class Group {
     this.duration = duration;
     this.has_dogs = has_dogs;
     this.has_kids = has_kids;
+    this.description = description;
   }
 
   public boolean isIs_walking() {
@@ -117,6 +119,14 @@ public class Group {
     this.has_kids = has_kids;
   }
 
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
   @Override
   public String toString() {
     return "Group{" +
@@ -136,7 +146,7 @@ public class Group {
   public static List<Group> fromString(List<List<String>> results) {
     return results.stream().map(row -> {
       Group group = new Group(row.get(0), row.get(1), row.get(2), row.get(3),
-              row.get(4), row.get(5), row.get(6), Boolean.valueOf(row.get(7)), Boolean.valueOf(row.get(8)));
+              row.get(4), row.get(5), row.get(6), Boolean.valueOf(row.get(7)), Boolean.valueOf(row.get(8)), row.get(9));
 
       // set is_walking
       boolean is_walking = false;

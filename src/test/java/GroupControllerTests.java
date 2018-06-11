@@ -58,9 +58,9 @@ public class GroupControllerTests {
     Mockito.reset(groupService);
     mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     group = new Group("id", "", "2018-06-10 12:00:00", "wpefhflaimcbcypsygywqqyutvtxvbhpdnlb",
-            "51.4989", "51.4989", "01:00:00", false, false);
+            "51.4989", "51.4989", "01:00:00", false, false, "");
     badGroup = new Group("", "", "", "", "", "", ""
-            , false, false);
+            , false, false, "");
   }
 
   @Test
@@ -99,7 +99,8 @@ public class GroupControllerTests {
             .andExpect(jsonPath("$[0].location_longitude", is("51.4989")))
             .andExpect(jsonPath("$[0].duration", is("01:00:00")))
             .andExpect(jsonPath("$[0].has_dogs", is(false)))
-            .andExpect(jsonPath("$[0].has_kids", is(false)));
+            .andExpect(jsonPath("$[0].has_kids", is(false)))
+            .andExpect(jsonPath("$[0].description", is("")));
   }
 
   @Test
@@ -124,7 +125,8 @@ public class GroupControllerTests {
             .andExpect(jsonPath("$[0].location_longitude", is("51.4989")))
             .andExpect(jsonPath("$[0].duration", is("01:00:00")))
             .andExpect(jsonPath("$[0].has_dogs", is(false)))
-            .andExpect(jsonPath("$[0].has_kids", is(false)));
+            .andExpect(jsonPath("$[0].has_kids", is(false)))
+            .andExpect(jsonPath("$[0].description", is("")));
   }
 
   @Test
