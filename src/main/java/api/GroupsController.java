@@ -43,7 +43,7 @@ public class GroupsController {
         if (!(latitude.isPresent() && longitude.isPresent())) {
           response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         } else {
-          groups = groupService.getAllGroups(latitude.get(),longitude.get(),"1.5");
+          groups = groupService.getAllGroups(latitude.get(),longitude.get(), radius.get());
           if (groups.isEmpty()){
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
           }
