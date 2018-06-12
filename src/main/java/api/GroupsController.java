@@ -19,7 +19,7 @@ public class GroupsController {
   @Autowired
   private GroupService groupService;
 
-  @GetMapping
+  @GetMapping()
   @ResponseBody
   public List<Group> get(@RequestParam("device_id") Optional<String> deviceId, @RequestParam("latitude") Optional<String> latitude,
                          @RequestParam("longitude") Optional<String> longitude
@@ -54,6 +54,23 @@ public class GroupsController {
       }
 
     return groups;
+  }
+
+  @GetMapping("/admin")
+  @ResponseBody
+  public String getAdmin(@RequestParam("group_id") String group_id, HttpServletResponse response) {
+    String res = "";
+    try {
+      res = groupService.getAdmin(group_id);
+      if (res.equals("")) {
+        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+      }
+    } catch (SQLException | ClassNotFoundException e) {
+      response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+    }
+
+    return res;
+
   }
 
   @PostMapping

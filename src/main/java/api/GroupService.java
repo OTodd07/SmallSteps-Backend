@@ -99,4 +99,13 @@ public class GroupService {
     status = db.executeInsertQuery(delete);
     return status;
   }
+
+  public String getAdmin(String group_id) throws SQLException, ClassNotFoundException {
+    String res = "";
+    db.openConnection();
+    String admin = String.format("SELECT admin_id FROM groups WHERE id = '%s'" , group_id);
+    res = db.executeSelectQuery(admin).get(0).get(0);
+    db.closeConnection();
+    return res;
+  }
 }

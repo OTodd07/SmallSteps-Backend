@@ -1,14 +1,20 @@
 package api;
 
-public class Location {
-  private String latitude;
-  private String longitude;
-  private String radius;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-  public Location(String latitude, String longitude) {
+public class Location {
+
+  @JsonProperty
+  private String latitude;
+
+  @JsonProperty
+  private String longitude;
+
+  @JsonCreator
+  public Location(@JsonProperty("lat") String latitude, @JsonProperty("long") String longitude) {
     this.latitude = latitude;
     this.longitude = longitude;
-    this.radius = "1.5";
   }
 
   public String getLatitude() {
@@ -19,7 +25,4 @@ public class Location {
     return longitude;
   }
 
-  public String getRadius() {
-    return radius;
-  }
 }
