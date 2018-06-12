@@ -26,8 +26,8 @@ public class GroupService {
 
   public List<Group> getAllGroups(String curLat, String curLong, String radius) throws SQLException, ClassNotFoundException {
     db.openConnection();
-    List<Group> groups = Group.fromString(db.executeSelectQuery("SELECT * FROM groups"))
-            .stream().filter(group -> group.distanceInMetres(curLat,curLong) / 1000 <= Double.parseDouble(radius) ).collect(Collectors.toList());
+    List<Group> groups = Group.fromString(db.executeSelectQuery("SELECT * FROM groups"));
+            // .stream().filter(group -> group.distanceInMetres(curLat,curLong) / 1000 <= Double.parseDouble(radius) ).collect(Collectors.toList());
     db.closeConnection();
     return groups;
   }
