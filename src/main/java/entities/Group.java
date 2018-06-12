@@ -266,7 +266,7 @@ public class Group {
     double delta_psi = Math.toRadians(lat2_d - lat1_d);
     double delta_lam = Math.toRadians(lon2_d - lon1_d);
 
-    double a = Math.sin(delta_psi / 2) * Math.sin(delta_lam / 2) +
+    double a = Math.sin(delta_psi / 2) * Math.sin(delta_psi / 2) +
             Math.cos(psi_1) * Math.cos(psi_2) * Math.sin(delta_lam / 2) * Math.sin(delta_lam / 2);
 
     double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
