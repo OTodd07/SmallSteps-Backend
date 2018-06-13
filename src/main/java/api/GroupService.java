@@ -97,6 +97,7 @@ public class GroupService {
     String delete = String.format("DELETE FROM walkers_groups WHERE group_id = '%s' AND walker_id = '%s'",walkerID
                                    , group_id);
     status = db.executeInsertQuery(delete);
+    db.closeConnection();
     return status;
   }
 
