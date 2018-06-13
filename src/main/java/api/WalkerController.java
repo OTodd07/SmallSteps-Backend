@@ -35,6 +35,22 @@ public class WalkerController {
     return walkers;
   }
 
+  @GetMapping("/name")
+  @ResponseBody
+  public String getNameFromId(@RequestParam(value = "device_id") String deviceId, HttpServletResponse response) {
+    String name = "";
+    try {
+      name = walkerService.getNameFromId(deviceId);
+      if (name.equals(null)) {
+        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+      }
+    } catch (SQLException | ClassNotFoundException e) {
+      response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+    }
+
+    return name;
+  }
+
   @PostMapping
   public ResponseEntity<?> post(@RequestBody Walker walker) {
     try {

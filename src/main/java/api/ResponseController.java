@@ -7,10 +7,10 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 public class ResponseController {
-
-  @MessageMapping("/response/{device_id}")
-  @SendTo("/topic/response/{device_id}")
-  public Response reply(Response response) {
-    return response;
-  }
+//
+//  @MessageMapping("/response/{device_id}")
+//  @SendTo("/topic/response/{device_id}")
+//  public Response reply(Response response) {
+//    return response;
+//  }
 }

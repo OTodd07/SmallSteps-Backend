@@ -17,9 +17,15 @@ public class LocationController {
     return l;
   }
 
-  @MessageMapping("/chat/{device_id}")
+  @MessageMapping("/request/{device_id}")
   @SendTo("/topic/confluence/{device_id}")
   public Request request(@Payload Request request) {
     return new Request(request.getSender());
+  }
+
+  @MessageMapping("/response/{device_id}")
+  @SendTo("/topic/confluence/{device_id}")
+  public Response response(@Payload Response response) {
+    return response;
   }
 }

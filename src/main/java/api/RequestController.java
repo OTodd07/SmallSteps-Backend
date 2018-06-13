@@ -9,9 +9,9 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class RequestController {
 
-  @MessageMapping("/request/{device_id}")
-  @SendTo("/topic/request/{device_id}")
-  public Request request(@Payload Request request, @DestinationVariable String device_id) {
-    return new Request(device_id);
-  }
+//  @MessageMapping("/request/{device_id}")
+//  @SendTo("/topic/request/{device_id}")
+//  public Request request(@Payload Request request, @DestinationVariable String device_id) {
+//    return new Request(device_id);
+//  }
 }

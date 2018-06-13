@@ -37,4 +37,12 @@ public class WalkerService {
     return status;
   }
 
+  public String getNameFromId(String deviceId) throws SQLException, ClassNotFoundException {
+    boolean status;
+    db.openConnection();
+    String getName = String.format("SELECT name from walkers where device_id = '%s'", deviceId);
+    String res = db.executeSelectQuery(getName).get(0).get(0);
+    db.closeConnection();
+    return res;
+  }
 }
