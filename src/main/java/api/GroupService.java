@@ -94,8 +94,7 @@ public class GroupService {
   public boolean deleteFromGroup(String walkerID, String group_id) throws SQLException , ClassNotFoundException {
     boolean status;
     db.openConnection();
-    String delete = String.format("DELETE FROM walkers_groups WHERE group_id = '%s' AND walker_id = '%s'",walkerID
-                                   , group_id);
+    String delete = String.format("DELETE FROM walkers_groups WHERE group_id = '%s' AND walker_id = '%s'",group_id, walkerID);
     status = db.executeInsertQuery(delete);
     db.closeConnection();
     return status;
