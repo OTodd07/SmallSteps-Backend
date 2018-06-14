@@ -8,9 +8,20 @@ public class Response {
   @JsonProperty
   private boolean response;
 
+  @JsonProperty
+  private Location location;
+
   @JsonCreator
-  public Response(@JsonProperty("response") boolean response) {
+  public Response(@JsonProperty("response") boolean response, @JsonProperty("location") Location location) {
     this.response = response;
+  }
+
+  public Location getLocation() {
+    return location;
+  }
+
+  public void setLocation(Location location) {
+    this.location = location;
   }
 
   public boolean isResponse() {
