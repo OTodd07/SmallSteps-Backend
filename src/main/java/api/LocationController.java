@@ -12,9 +12,8 @@ public class LocationController {
   @MessageMapping("/confluence/{device_id}")
   @SendTo("/topic/confluence/{device_id}")
 //  public Location sendPos(@Payload Location location) {
-    public Location sendPos() {
-    Location l = new Location("1","2");
-    return l;
+    public Location sendPos(Location location) {
+    return location;
   }
 
   @MessageMapping("/request/{device_id}")
