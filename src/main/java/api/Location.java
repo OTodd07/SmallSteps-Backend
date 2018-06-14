@@ -12,13 +12,13 @@ public class Location {
   private String longitude;
 
   @JsonProperty
-  private String sender;
+  private String senderID;
 
   @JsonCreator
-  public Location(@JsonProperty("lat") String latitude, @JsonProperty("long") String longitude, @JsonProperty("sender") String sender) {
+  public Location(@JsonProperty("lat") String latitude, @JsonProperty("long") String longitude, @JsonProperty("senderID") String sender) {
     this.latitude = latitude;
     this.longitude = longitude;
-    this.sender = sender;
+    this.senderID = sender;
   }
 
   public String getLatitude() {
@@ -38,10 +38,10 @@ public class Location {
   }
 
   public String getSender() {
-    return sender;
+    return senderID;
   }
 
   public void setSender(String sender) {
-    this.sender = sender;
+    this.senderID = sender;
   }
 }
