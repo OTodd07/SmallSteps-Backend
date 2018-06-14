@@ -19,7 +19,7 @@ public class LocationController {
   @MessageMapping("/request/{device_id}")
   @SendTo("/topic/confluence/{device_id}")
   public Request request(@Payload Request request) {
-    return new Request(request.getSender());
+    return request;
   }
 
   @MessageMapping("/response/{device_id}")
