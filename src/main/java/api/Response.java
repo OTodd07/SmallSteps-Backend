@@ -14,11 +14,21 @@ public class Response {
   @JsonProperty
   private String longitude;
 
+  @JsonProperty
+  private String confluenceLong;
+
+  @JsonProperty
+  private  String confluenceLat;
+
   @JsonCreator
-  public Response(@JsonProperty("response") boolean response, @JsonProperty("latitude") String latitude, @JsonProperty("longitude") String longitude) {
+  public Response(@JsonProperty("response") boolean response, @JsonProperty("latitude") String latitude,
+                  @JsonProperty("longitude") String longitude, @JsonProperty("confluenceLong") String confluenceLong,
+                  @JsonProperty("confluenceLat") String confluenceLat) {
     this.response = response;
     this.latitude = latitude;
     this.longitude = longitude;
+    this.confluenceLat = confluenceLat;
+    this.confluenceLong = confluenceLong;
   }
 
   public boolean isResponse() {
@@ -43,5 +53,21 @@ public class Response {
 
   public void setResponse(boolean response) {
     this.response = response;
+  }
+
+  public String getConfluenceLong() {
+    return confluenceLong;
+  }
+
+  public void setConfluenceLong(String confluenceLong) {
+    this.confluenceLong = confluenceLong;
+  }
+
+  public String getConfluenceLat() {
+    return confluenceLat;
+  }
+
+  public void setConfluenceLat(String confluenceLat) {
+    this.confluenceLat = confluenceLat;
   }
 }
