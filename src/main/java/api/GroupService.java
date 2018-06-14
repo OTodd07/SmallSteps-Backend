@@ -108,4 +108,13 @@ public class GroupService {
     db.closeConnection();
     return res;
   }
+
+  public String getName(String group_id) throws SQLException, ClassNotFoundException {
+    String res = "";
+    db.openConnection();
+    String name = String.format("select name from groups where id = '%s' ", group_id);
+    res = db.executeSelectQuery(name).get(0).get(0);
+    db.closeConnection();
+    return res;
+  }
 }

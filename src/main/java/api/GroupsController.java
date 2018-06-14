@@ -73,6 +73,21 @@ public class GroupsController {
 
   }
 
+  @GetMapping("/name")
+  @ResponseBody
+  public String getName(@RequestParam("group_id") String group_id, HttpServletResponse response) {
+    String res = "";
+    try {
+      res = groupService.getName(group_id);
+      if (res.equals("")) {
+        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+      }
+    } catch (SQLException | ClassNotFoundException e) {
+      response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+    }
+    return res;
+  }
+
   @PostMapping
   public ResponseEntity<?> post(@RequestBody Group group) {
     try {
