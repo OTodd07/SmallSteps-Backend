@@ -20,6 +20,7 @@ public class Group {
   private boolean has_kids;
   private boolean is_walking;
   private String description;
+  private int number_of_people;
 
   public Group() {
 
@@ -127,6 +128,14 @@ public class Group {
     this.description = description;
   }
 
+  public int getNumber_of_people() {
+    return number_of_people;
+  }
+
+  public void setNumber_of_people(int number_of_people) {
+    this.number_of_people = number_of_people;
+  }
+
   @Override
   public String toString() {
     return "Group{" +
@@ -169,6 +178,8 @@ public class Group {
       }
 
       group.setIs_walking(is_walking);
+
+      if (row.size() == 11) group.setNumber_of_people(Integer.parseInt(row.get(10)));
       return group;
     }).collect(Collectors.toList());
 
@@ -179,7 +190,7 @@ public class Group {
     // Null checks
     Field[] fields = getClass().getDeclaredFields();
     for (Field field : fields) {
-      if (field.getName().equals("id")) continue;
+      if (field.getName().equals("id") || field.getName().equals("number_of_people")) continue;
 
       try {
         if (field.get(this) == null) return false;
@@ -272,12 +283,5 @@ public class Group {
     double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
   }
-
-  private static double coordDistance(double latitude1, double longitude1, double latitude2, double longitude2) {
-    return 6371 * Math.acos(
-            Math.sin(latitude1) * Math.sin(latitude2)
-                    + Math.cos(latitude1) * Math.cos(latitude2) * Math.cos(longitude2 - longitude1));
-  }
-
 
 }

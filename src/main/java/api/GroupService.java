@@ -15,9 +15,10 @@ public class GroupService {
   public List<Group> getGroupsByDeviceId(String deviceId) throws SQLException, ClassNotFoundException {
     db.openConnection();
 
-    String query = String.format("SELECT groups.* FROM walkers_groups " +
+    String query = String.format("SELECT groups.* COUNT(walkers_groups.walker_id) AS number_of_people FROM walkers_groups " +
             "INNER JOIN walkers ON walkers.device_id = walkers_groups.walker_id " +
-            "INNER JOIN groups ON groups.id = walkers_groups.group_id WHERE walkers.device_id = '%s'", deviceId);
+            "INNER JOIN groups ON groups.id = walkers_groups.group_id WHERE walkers.device_id = '%s' " +
+            "GROUP BY groups.id", deviceId);
 
     List<Group> groups = Group.fromString(db.executeSelectQuery(query));
     db.closeConnection();
@@ -26,8 +27,12 @@ public class GroupService {
 
   public List<Group> getAllGroups(String curLat, String curLong, String radius) throws SQLException, ClassNotFoundException {
     db.openConnection();
-    List<Group> groups = Group.fromString(db.executeSelectQuery("SELECT * FROM groups"))
-            .stream().filter(group -> group.distanceInMetres(curLat,curLong) / 1000 <= Double.parseDouble(radius) ).collect(Collectors.toList());
+    List<Group> groups = Group.fromString(db.executeSelectQuery("SELECT groups.*, COUNT(walkers_groups.walker_id) AS number_of_people " +
+            "FROM groups INNER JOIN walkers_groups ON walkers_groups.group_id = groups.id " +
+            "GROUP BY groups.id"))
+            .stream()
+            .filter(group -> group.distanceInMetres(curLat,curLong) / 1000 <= Double.parseDouble(radius) )
+            .collect(Collectors.toList());
     db.closeConnection();
     return groups;
   }
@@ -37,7 +42,6 @@ public class GroupService {
     if (!group.groupValidityCheck()) return false;
 
     db.openConnection();
-
 
     String lookForGroup = String.format("SELECT * FROM groups where admin_id = '%s' AND time = '%s'",
             group.getAdmin_id(), group.getTime());
@@ -69,7 +73,6 @@ public class GroupService {
     List<Group> groups = Group.fromString(db.executeSelectQuery(getGroup));
 
     group.setId(groups.get(0).getId());
-
     String addAdmin = String.format("INSERT into walkers_groups (walker_id, group_id) values ('%s','%s')",
             group.getAdmin_id(), group.getId());
 
