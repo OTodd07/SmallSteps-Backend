@@ -21,9 +21,7 @@ public class GroupService {
 
     List<Group> groups = Group.fromString(db.executeSelectQuery(query));
     for (Group group : groups) {
-      query = String.format("SELECT COUNT(walkers_groups.walker_id) AS number_of_people" +
-              "FROM groups INNER JOIN walkers_groups ON walkers_group.group_id = groups.id " +
-              "WHERE groups.id = '%s' GROUP BY groups.id", group.getId());
+      query = String.format("SELECT COUNT(*) AS number_of_people FROM walkers_groups WHERE group_id = '%s'", group.getId());
 
       List<List<String>> res = db.executeSelectQuery(query);
       group.setNumber_of_people(Integer.parseInt(res.get(0).get(0)));
