@@ -15,7 +15,7 @@ public class GroupService {
   public List<Group> getGroupsByDeviceId(String deviceId) throws SQLException, ClassNotFoundException {
     db.openConnection();
 
-    String query = String.format("SELECT groups.* COUNT(walkers_groups.walker_id) AS number_of_people FROM walkers_groups " +
+    String query = String.format("SELECT groups.*, COUNT(walkers_groups.walker_id) AS number_of_people FROM walkers_groups " +
             "INNER JOIN walkers ON walkers.device_id = walkers_groups.walker_id " +
             "INNER JOIN groups ON groups.id = walkers_groups.group_id WHERE walkers.device_id = '%s' " +
             "GROUP BY groups.id", deviceId);
