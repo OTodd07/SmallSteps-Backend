@@ -27,4 +27,10 @@ public class LocationController {
   public Response response(@Payload Response response) {
     return response;
   }
+
+  @MessageMapping("/reached/{device_id}")
+  @SendTo("/topic/confluence/{device_id}")
+  public ConfluenceReached reached(@Payload ConfluenceReached confluenceReached) {
+    return confluenceReached;
+  }
 }
