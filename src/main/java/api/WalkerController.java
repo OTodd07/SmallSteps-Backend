@@ -51,6 +51,23 @@ public class WalkerController {
     return name;
   }
 
+  @GetMapping("/phone")
+  @ResponseBody
+  public String getPhoneNumberFromId(@RequestParam(value = "device_id") String deviceId, HttpServletResponse response) {
+    String phoneNumber = "";
+    try {
+      phoneNumber = walkerService.getPhoneNumberFromId(deviceId);
+      if (phoneNumber.equals(null)) {
+        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+      }
+    } catch (SQLException | ClassNotFoundException e) {
+      response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+    }
+
+    return phoneNumber;
+  }
+
+
   @PostMapping
   public ResponseEntity<?> post(@RequestBody Walker walker) {
     try {
